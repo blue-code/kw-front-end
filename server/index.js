@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const { sendSuccess, sendError } = require('./utils/responseHandler');
@@ -51,11 +52,7 @@ const authMiddleware = (req, res, next) => {
 };
 // --- 인증 미들웨어 끝 ---
 
-app.get('/', (req, res) => {
-  sendSuccess(res, {
-    message: `백엔드 서버 실행 중! 사용자 수: ${users.length}, 게시글 수: ${posts.length}, 활성 토큰 수: ${activeTokens.size}`
-  });
-});
+
 
 // --- 인증 API 라우트 ---
 const authRouter = express.Router();
@@ -181,6 +178,14 @@ postsRouter.get('/:postId', (req, res, next) => {
 
 app.use('/api/posts', postsRouter);
 // --- 게시판 API 라우트 끝 ---
+
+// React 빌드 파일 제공
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// 모든 API 라우트가 아닌 요청에 대해 React 앱의 index.html을 제공
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(PORT, () => {
   logger.info(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`, { context: 'ServerStart' });
