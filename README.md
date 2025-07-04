@@ -42,6 +42,7 @@
 ### 전제 조건
 
 *   Node.js (npm 또는 Yarn 포함)
+*   OpenSSL (HTTPS 적용을 위해 필요)
 
 ### 설치
 
@@ -61,6 +62,18 @@
     npm install
     ```
 
+### HTTPS 설정 (최초 1회)
+
+개발 환경에서 HTTPS를 사용하기 위해 자체 서명된 SSL 인증서를 생성해야 합니다.
+
+```bash
+cd server/certs
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/C=KR/ST=Seoul/L=Seoul/O=kw-front-end/OU=dev/CN=localhost"
+cd ../..
+```
+
+> **참고:** 이 인증서는 로컬 개발용이며, 실제 프로덕션 환경에서는 신뢰할 수 있는 인증 기관(CA)에서 발급받은 인증서를 사용해야 합니다.
+
 ### 애플리케이션 실행 (통합 환경)
 
 프론트엔드와 백엔드가 하나의 Node.js 서버에서 동작하도록 설정되어 있습니다.
@@ -79,7 +92,9 @@
     cd ../server
     node index.js
     ```
-    서버는 `http://localhost:5001`에서 실행됩니다. 웹 브라우저를 열고 이 주소로 접속하면 React 애플리케이션이 표시됩니다.
+    서버는 `https://localhost:5001`에서 실행됩니다. 웹 브라우저를 열고 이 주소로 접속하면 React 애플리케이션이 표시됩니다.
+
+    > **경고:** 자체 서명된 인증서를 사용하므로 브라우저에서 "안전하지 않음" 경고가 표시될 수 있습니다. 로컬 개발 환경에서는 이 경고를 무시하고 접속을 계속 진행해도 안전합니다.
 
 ### 테스트 계정
 

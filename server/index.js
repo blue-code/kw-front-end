@@ -1,3 +1,5 @@
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -9,6 +11,12 @@ const logger = require('./config/logger'); // Winston 로거 임포트
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+// --- HTTPS 옵션 ---
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'certs', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem'))
+};
 
 // --- 인메모리 데이터 저장소 ---
 let users = [];
@@ -187,8 +195,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  logger.info(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`, { context: 'ServerStart' });
+https.createServer(httpsOptions, app).listen(PORT, () => {
+  logger.info(`서버가 https://localhost:${PORT} 에서 실행 중입니다.`, { context: 'ServerStart' });
   const testUser = users.find(u => u.username === 'testuser');
   if (testUser) {
     logger.info('테스트 사용자:', { context: 'ServerStart', user: { id: testUser.id, username: testUser.username } });
