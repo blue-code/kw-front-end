@@ -15,16 +15,16 @@
 *   **오류 처리:**
     *   **프론트엔드:** 전역 오류 핸들링 (콘솔, 로컬 스토리지 로깅), React Error Boundary를 통한 UI 복원력
     *   **백엔드:** Winston을 이용한 상세 서버 로깅, 전역 오류 미들웨어 및 프로세스 레벨 오류 처리
-*   **반응형 UI:** (기본적인 CSS만 적용되어 있으나, 확장을 통해 반응형 디자인 구현 가능)
+*   **반응형 UI:** Bootstrap을 활용하여 세련되고 반응형인 사용자 인터페이스를 제공합니다.
 
 ## 🛠️ 사용된 기술 스택
 
-### 프론트엔드 (my-react-app)
+### 프론트엔드 (client)
 
 *   **React.js:** 사용자 인터페이스 구축을 위한 JavaScript 라이브러리
 *   **React Router DOM:** SPA(Single Page Application) 라우팅 관리
 *   **Context API:** 전역 상태 관리 (인증, 게시글 데이터)
-*   **CSS:** 스타일링
+*   **Bootstrap & React-Bootstrap:** 반응형 디자인 및 UI 컴포넌트
 *   **`fetch` API:** 백엔드 API 통신
 
 ### 백엔드 (server)
@@ -52,7 +52,7 @@
     ```
 2.  **프론트엔드 의존성 설치:**
     ```bash
-    cd my-react-app
+    cd client
     npm install
     ```
 3.  **백엔드 의존성 설치:**
@@ -61,29 +61,30 @@
     npm install
     ```
 
-### 애플리케이션 실행
+### 애플리케이션 실행 (통합 환경)
 
-1.  **백엔드 서버 실행:**
-    `server` 디렉토리에서 다음 명령어를 실행합니다.
+프론트엔드와 백엔드가 하나의 Node.js 서버에서 동작하도록 설정되어 있습니다.
+
+1.  **프론트엔드 빌드:**
+    `client` 디렉토리에서 React 애플리케이션을 빌드합니다.
     ```bash
-    cd server
+    cd client
+    npm run build
+    ```
+    이 명령어는 `client/build` 디렉토리에 정적 파일을 생성합니다.
+
+2.  **통합 서버 실행:**
+    `server` 디렉토리에서 다음 명령어를 실행하여 백엔드 API와 프론트엔드 정적 파일을 함께 제공하는 서버를 시작합니다.
+    ```bash
+    cd ../server
     node index.js
     ```
-    서버는 기본적으로 `http://localhost:5001`에서 실행됩니다.
-    (참고: 현재 백엔드 데이터는 인메모리 방식이므로, 서버 재시작 시 모든 데이터가 초기화됩니다.)
+    서버는 `http://localhost:5001`에서 실행됩니다. 웹 브라우저를 열고 이 주소로 접속하면 React 애플리케이션이 표시됩니다.
 
 ### 테스트 계정
 
 *   **사용자 이름 (Username):** `testuser`
 *   **비밀번호 (Password):** `password`
-
-2.  **프론트엔드 애플리케이션 실행:**
-    `my-react-app` 디렉토리에서 다음 명령어를 실행합니다.
-    ```bash
-    cd my-react-app
-    npm start
-    ```
-    프론트엔드 애플리케이션은 기본적으로 `http://localhost:3000`에서 실행되며, `/api` 요청은 백엔드 서버로 프록시됩니다.
 
 ## 🌐 API 엔드포인트 (백엔드)
 
@@ -107,7 +108,7 @@
 
 ## ⚠️ 오류 처리
 
-### 프론트엔드 (`my-react-app/src/utils/errorHandler.js`)
+### 프론트엔드 (`client/src/utils/errorHandler.js`)
 
 *   `logError(context, error, additionalInfo)`: 콘솔에 오류를 출력하고, `localStorage`에 오류 정보를 저장합니다.
 *   `setupGlobalErrorHandlers()`: `window.onerror`와 `window.onunhandledrejection`을 설정하여 처리되지 않은 전역 JavaScript 오류 및 Promise 거부를 포착합니다.
@@ -119,11 +120,3 @@
 *   **전역 오류 미들웨어:** Express 애플리케이션의 마지막 미들웨어로, 모든 처리되지 않은 오류를 포착하여 로깅하고 클라이언트에 표준화된 오류 응답을 보냅니다.
 *   **프로세스 이벤트 리스너:** `process.on('unhandledRejection')` 및 `process.on('uncaughtException')`를 사용하여 Node.js 프로세스 레벨의 치명적인 오류를 처리하고 로깅합니다.
 
-## 💡 향후 개선 사항
-
-*   **데이터베이스 통합:** 현재 인메모리 데이터 저장 방식은 서버 재시작 시 데이터가 손실됩니다. MongoDB, PostgreSQL 등 영구적인 데이터베이스를 통합하여 데이터를 지속적으로 저장하도록 개선할 수 있습니다.
-*   **사용자 등록 기능:** 현재는 `testuser`만 존재합니다. 새로운 사용자가 직접 가입할 수 있는 등록 기능을 추가할 수 있습니다.
-*   **게시글 수정/삭제:** 게시글 수정 및 삭제 기능을 추가하여 CRUD(Create, Read, Update, Delete) 작업을 완성할 수 있습니다.
-*   **UI/UX 개선:** Material-UI, Ant Design, Bootstrap 등 UI 라이브러리를 활용하여 더 현대적이고 사용자 친화적인 인터페이스를 구축할 수 있습니다.
-*   **테스트 코드 작성:** 프론트엔드 및 백엔드에 대한 단위 및 통합 테스트 코드를 작성하여 코드의 안정성과 유지보수성을 높일 수 있습니다.
-*   **배포 자동화:** CI/CD 파이프라인을 구축하여 개발 및 배포 프로세스를 자동화할 수 있습니다.

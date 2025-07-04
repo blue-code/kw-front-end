@@ -36,28 +36,30 @@ const PostDetail = () => {
 
   // BoardContext에서 발생한 전반적인 오류 (예: localStorage 로드 실패 등)
   if (boardContextError) {
-    return <p style={{ color: 'red' }} role="alert">게시판 시스템 오류: {boardContextError} <Link to="/board">목록으로</Link></p>;
+    return <div className="alert alert-danger" role="alert">게시판 시스템 오류: {boardContextError} <Link to="/board" className="alert-link">목록으로</Link></div>;
   }
 
   // 이 컴포넌트 내에서 발생한 특정 오류 (예: 게시글 못 찾음)
   if (componentError) {
-    return <p style={{ color: 'red' }} role="alert">{componentError} <Link to="/board">목록으로</Link></p>;
+    return <div className="alert alert-danger" role="alert">{componentError} <Link to="/board" className="alert-link">목록으로</Link></div>;
   }
 
   // 게시글 로딩 중 (post가 아직 null이고 오류도 없는 경우)
   if (!post) {
-    return <p>게시글 정보를 불러오는 중...</p>;
+    return <div className="alert alert-info">게시글 정보를 불러오는 중...</div>;
   }
 
   return (
-    <div>
-      <h2>{post.title}</h2>
-      <p><strong>작성자:</strong> {post.author || '익명'}</p>
-      <p><strong>작성일:</strong> {new Date(post.createdAt).toLocaleString()}</p>
-      <hr />
-      <div style={{ whiteSpace: 'pre-wrap' }}>{post.content}</div>
-      <hr />
-      <Link to="/board">목록으로 돌아가기</Link>
+    <div className="card mb-4">
+      <div className="card-body">
+        <h2 className="card-title mb-3">{post.title}</h2>
+        <h6 className="card-subtitle mb-2 text-muted">작성자: {post.author || '익명'}</h6>
+        <h6 className="card-subtitle mb-3 text-muted">작성일: {new Date(post.createdAt).toLocaleString()}</h6>
+        <hr />
+        <div className="card-text" style={{ whiteSpace: 'pre-wrap' }}>{post.content}</div>
+        <hr />
+        <Link to="/board" className="btn btn-secondary">목록으로 돌아가기</Link>
+      </div>
     </div>
   );
 };

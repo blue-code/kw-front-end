@@ -40,33 +40,35 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <h2>로그인</h2>
+    <div className="card p-4 mx-auto mt-5" style={{ maxWidth: '400px' }}>
+      <h2 className="card-title text-center mb-4">로그인</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">사용자 이름:</label>
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">사용자 이름:</label>
           <input
             type="text"
             id="username"
+            className="form-control"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
             aria-describedby={error ? "login-error" : undefined}
           />
         </div>
-        <div>
-          <label htmlFor="password">비밀번호:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">비밀번호:</label>
           <input
             type="password"
             id="password"
+            className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             aria-describedby={error ? "login-error" : undefined}
           />
         </div>
-        {error && <p id="login-error" style={{ color: 'red' }} role="alert">{error}</p>}
-        <button type="submit">로그인</button>
+        {error && <div id="login-error" className="alert alert-danger" role="alert">{error}</div>}
+        <button type="submit" className="btn btn-primary w-100">로그인</button>
       </form>
     </div>
   );

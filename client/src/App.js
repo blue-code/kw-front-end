@@ -86,9 +86,9 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <div>
-                    <h1>메인 페이지</h1>
-                    <p>환영합니다! 이 페이지는 로그인이 필요한 페이지입니다.</p>
+                  <div className="text-center">
+                    <h1 className="mb-3">메인 페이지</h1>
+                    <p className="lead">환영합니다! 이 페이지는 로그인이 필요한 페이지입니다.</p>
                     {/* useAuth를 Layout 내부에서 호출했으므로 여기서는 직접 user 사용 불가. 필요시 Prop으로 넘기거나 Layout에서 처리 */}
                   </div>
                 </ProtectedRoute>

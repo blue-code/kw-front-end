@@ -26,18 +26,15 @@ const BoardLayout = () => {
   };
 
   return (
-    // BoardProvider는 게시판 관련 상태와 함수를 제공하며, 내부적으로 오류를 처리하고 로깅할 수 있습니다.
-    // BoardProvider 자체에서 발생하는 초기화 오류 등은 ErrorBoundary에서 처리될 수 있습니다.
     <BoardProvider>
-      <div>
-        <h1>게시판</h1>
-        <p>환영합니다, {user?.username || '방문자'} 님!</p>
-        <nav>
-          <Link to="">게시글 목록</Link> | {" "} {/* 상대 경로 사용 /board/ */}
-          <Link to="new">새 글 작성</Link> | {" "} {/* 상대 경로 사용 /board/new */}
-          <button onClick={handleLogout}>로그아웃</button>
+      <div className="container mt-4">
+        <h1 className="mb-3">게시판</h1>
+        <p className="lead">환영합니다, {user?.username || '방문자'} 님!</p>
+        <nav className="nav nav-tabs mb-4">
+          <Link className="nav-link" to="">게시글 목록</Link>
+          <Link className="nav-link" to="new">새 글 작성</Link>
+          <button className="btn btn-danger ms-auto" onClick={handleLogout}>로그아웃</button>
         </nav>
-        <hr />
         {/* Outlet을 통해 중첩된 라우트(PostList, PostForm, PostDetail)가 렌더링됩니다.
             이들 컴포넌트 내부의 오류는 각 컴포넌트 또는 BoardContext에서 처리됩니다. */}
         <Outlet />

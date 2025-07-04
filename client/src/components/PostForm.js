@@ -52,38 +52,45 @@ const PostForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>새 게시글 작성</h3>
-      {/* 폼 자체 유효성 검사 또는 직접적인 제출 오류 */}
-      {formError && <p style={{ color: 'red' }} role="alert">{formError}</p>}
-      {/* BoardContext에서 발생한 오류 (예: localStorage 저장 실패 등) */}
-      {boardError && <p style={{ color: 'red' }} role="alert">게시판 오류: {boardError}</p>}
-      <div>
-        <label htmlFor="post-title">제목:</label>
-        <input
-          type="text"
-          id="post-title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          aria-describedby={formError || boardError ? "post-form-error" : undefined}
-        />
+    <div className="card mb-4">
+      <div className="card-body">
+        <h3 className="card-title mb-3">새 게시글 작성</h3>
+        <form onSubmit={handleSubmit}>
+          {/* 폼 자체 유효성 검사 또는 직접적인 제출 오류 */}
+          {formError && <div className="alert alert-danger" role="alert">{formError}</div>}
+          {/* BoardContext에서 발생한 오류 (예: localStorage 저장 실패 등) */}
+          {boardError && <div className="alert alert-danger" role="alert">게시판 오류: {boardError}</div>}
+          <div className="mb-3">
+            <label htmlFor="post-title" className="form-label">제목:</label>
+            <input
+              type="text"
+              id="post-title"
+              className="form-control"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              aria-describedby={formError || boardError ? "post-form-error" : undefined}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="post-content" className="form-label">내용:</label>
+            <textarea
+              id="post-content"
+              className="form-control"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              rows="5"
+              aria-describedby={formError || boardError ? "post-form-error" : undefined}
+            />
+          </div>
+          <div id="post-form-error" style={{ display: 'none' }}>
+            {/* 스크린 리더가 오류 메시지를 참조할 수 있도록 빈 div 제공 가능 */}
+          </div>
+          <button type="submit" className="btn btn-success">글쓰기</button>
+        </form>
       </div>
-      <div>
-        <label htmlFor="post-content">내용:</label>
-        <textarea
-          id="post-content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-          aria-describedby={formError || boardError ? "post-form-error" : undefined}
-        />
-      </div>
-      <div id="post-form-error" style={{ display: 'none' }}>
-        {/* 스크린 리더가 오류 메시지를 참조할 수 있도록 빈 div 제공 가능 */}
-      </div>
-      <button type="submit">글쓰기</button>
-    </form>
+    </div>
   );
 };
 
