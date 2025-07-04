@@ -80,3 +80,20 @@ logger.stream = {
 };
 
 module.exports = logger;
+
+// 터미널 출력을 위해 console.log/error를 직접 사용하도록 오버라이드
+if (process.env.NODE_ENV !== 'production') {
+  logger.info = (...args) => {
+    console.log(...args);
+    // 파일 로깅은 그대로 유지하기 위해 원래의 info 메소드 호출
+    Object.getPrototypeOf(logger).info.apply(logger, args);
+  };
+  logger.warn = (...args) => {
+    console.warn(...args);
+    Object.getPrototypeOf(logger).warn.apply(logger, args);
+  };
+  logger.error = (...args) => {
+    console.error(...args);
+    Object.getPrototypeOf(logger).error.apply(logger, args);
+  };
+}
